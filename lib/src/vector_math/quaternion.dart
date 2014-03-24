@@ -20,8 +20,6 @@
 
 part of vector_math;
 
-//TODO (fox32): Implement Quaternion.slerp
-
 /// Defines a [Quaternion] (a four-dimensional vector) for efficient rotation
 /// calculations.
 ///
@@ -30,6 +28,43 @@ part of vector_math;
 /// euler rotations.
 class Quaternion {
   final Float32List _storage41;
+
+  /// Interpolate between [start] and [end] using a spherical linear 
+  /// interpolation by the factor [t] and store it in [result].
+  /// [start] and [end] should be normalized.
+  static void slerp(Quaternion start, Quaternion end, double t, Quaternion 
+    result) {
+    const DOT_THRESHOLD = 0.9995;
+
+    // Compute the cosine of the angle between the two vectors.
+    final startStorage = start._storage41;
+    final endStorage = end._storage41;
+    var dot = startStorage[0] * endStorage[0] + startStorage[1] * endStorage[1] 
+            + startStorage[2] * endStorage[2] + startStorage[3] * endStorage[3];
+
+    if (dot > DOT_THRESHOLD) {
+        // If the inputs are too close for comfort, linearly interpolate
+        // and normalize the result.
+        result
+            ..setFrom(end)
+            ..sub(start)
+            ..scale(t)
+            ..add(start)
+            ..normalize();
+        return;
+    }
+
+    dot = dot.clamp(-1.0, 1.0); // Robustness: Stay within domain of acos()
+    var theta_0 = Math.acos(dot);  // theta_0 = angle between input vectors
+    var theta = theta_0 * t;    // theta = angle between start and result 
+
+    result
+        ..setFrom(end)
+        ..sub(end.scaled(dot))
+        ..normalize() // { start, result } is now an orthonormal basis
+        ..scale(Math.sin(theta))
+        ..add(start.scaled(Math.cos(theta)));
+  }
 
   /// Access the internal [storage] of the quaternions components.
   Float32List get storage => _storage41;

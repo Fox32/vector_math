@@ -29,6 +29,15 @@ class QuaternionTest extends BaseTest {
     expect(offsetVector.w, equals(5.0));
   }
 
+  void testSlerp(List<Quaternion> inputA, List<Quaternion> inputB, List<double> factors, List<Quaternion> expectedOutput) {
+    assert(inputA.length == inputB.length == factors.length == expectedOutput.length);
+    for (int i = 0; i < inputA.length; i++) {
+      Quaternion result = new Quaternion.identity();
+      Quaternion.slerp(inputA[i], inputB[i], factors[i], result);
+      relativeTest(result, expectedOutput[i]);
+    }
+  }
+
   void testConjugate(List<Quaternion> input, List<Quaternion> expectedOutput) {
     assert(input.length == expectedOutput.length);
     for (int i = 0; i < input.length; i++) {
@@ -63,6 +72,25 @@ class QuaternionTest extends BaseTest {
   void run() {
     test('Float32List instacing', testQuaternionInstacingFromByteBuffer);
     test('ByteBuffer instacing', testQuaternionInstacingFromByteBuffer);
+    test('Slerp', () {
+      List<Quaternion> inputA = new List<Quaternion>();
+      inputA.add(new Quaternion(0.388127, 0.803418, -0.433317, -0.126429)..normalize());
+      inputA.add(new Quaternion(0.18260, 0.54770, 0.73030, 0.36510)..normalize());
+      inputA.add(new Quaternion(0.9889, 0.0, 0.0, 0.14834)..normalize());
+      List<Quaternion> inputB = new List<Quaternion>();
+      inputB.add(new Quaternion(0.18260, 0.54770, 0.73030, 0.36510)..normalize());
+      inputB.add(new Quaternion(0.388127, 0.803418, -0.433317, -0.126429)..normalize());
+      inputB.add(new Quaternion(0.388127, 0.803418, -0.433317, -0.126429)..normalize());
+      List<double> factors = new List<double>();
+      factors.add(1.0);
+      factors.add(0.5);
+      factors.add(0.0);
+      List<Quaternion> expectedOutput = new List<Quaternion>();
+      expectedOutput.add(new Quaternion(0.18260, 0.54770, 0.73030, 0.36510)..normalize());
+      expectedOutput.add(new Quaternion(-0.18260, -0.54770, -0.73030, 0.36510)..normalize());
+      expectedOutput.add(new Quaternion(0.9889, 0.0, 0.0, 0.14834)..normalize());
+      testSlerp(inputA, inputB, factors, expectedOutput);
+    });
     test('Conjugate', () {
       List<Quaternion> input = new List<Quaternion>();
       input.add(new Quaternion.identity());
