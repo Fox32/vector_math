@@ -61,8 +61,8 @@ void testRayIntersectionSphere() {
   expect(parent.intersectsWithSphere(inside), equals(Math.sqrt(3.0)));
   expect(parent.intersectsWithSphere(hitting), equals(3.5 - Math.sqrt(1.75)));
   expect(parent.intersectsWithSphere(cutting), equals(4.0));
-  expect(parent.intersectsWithSphere(outside), equals(null));
-  expect(parent.intersectsWithSphere(behind), equals(null));
+  expect(parent.intersectsWithSphere(outside), isNaN);
+  expect(parent.intersectsWithSphere(behind), isNaN);
 }
 
 void testRayIntersectionTriangle() {
@@ -79,8 +79,8 @@ void testRayIntersectionTriangle() {
 
   absoluteTest(parent.intersectsWithTriangle(hitting), 2.0);
   absoluteTest(parent.intersectsWithTriangle(cutting), 0.5);
-  expect(parent.intersectsWithTriangle(outside), equals(null));
-  expect(parent.intersectsWithTriangle(behind), equals(null));
+  expect(parent.intersectsWithTriangle(outside), isNaN);
+  expect(parent.intersectsWithTriangle(behind), isNaN);
 
   // Test cases from real-world failures:
   // Just barely intersects, but gets rounded out
@@ -114,8 +114,8 @@ void testRayIntersectionAabb3() {
 
   expect(parent.intersectsWithAabb3(hitting), equals(2.5));
   expect(parent.intersectsWithAabb3(cutting), equals(1.0));
-  expect(parent.intersectsWithAabb3(outside), equals(null));
-  expect(parent.intersectsWithAabb3(behind), equals(null));
+  expect(parent.intersectsWithAabb3(outside), isNaN);
+  expect(parent.intersectsWithAabb3(behind), isNaN);
   expect(parent.intersectsWithAabb3(inside), equals(-1.0));
 }
 

@@ -48,7 +48,8 @@ class Ray {
   }
 
   /// Return the distance from the origin of [this] to the intersection with
-  /// [other] if [this] intersects with [other], or null if the don't intersect.
+  /// [other] if [this] intersects with [other], or [double.NAN] if they don't
+  /// intersect.
   double intersectsWithSphere(Sphere other) {
     final r = other._radius;
     final r2 = r * r;
@@ -56,18 +57,18 @@ class Ray {
     final s = l.dot(_direction);
     final l2 = l.dot(l);
     if (s < 0 && l2 > r2) {
-      return null;
+      return double.NAN;
     }
     final m2 = l2 - s * s;
     if (m2 > r2) {
-      return null;
+      return double.NAN;
     }
     final q = Math.sqrt(r2 - m2);
 
     return (l2 > r2) ? s - q : s + q;
   }
 
-  // Some varaibles that are used for intersectsWithTriangle and
+  // Some variables that are used for intersectsWithTriangle and
   // intersectsWithQuad. The performance is better in Dart and JS if we avoid
   // to create temporary instance over and over. Also reduce GC.
   static final _e1 = new Vector3.zero();
@@ -77,7 +78,8 @@ class Ray {
   static final _r = new Vector3.zero();
 
   /// Return the distance from the origin of [this] to the intersection with
-  /// [other] if [this] intersects with [other], or null if the don't intersect.
+  /// [other] if [this] intersects with [other], or [double.NAN] if they don't
+  /// intersect.
   double intersectsWithTriangle(Triangle other) {
     const double EPSILON = 10e-6;
 
@@ -96,7 +98,7 @@ class Ray {
     final a = _e1.dot(_q);
 
     if (a > -EPSILON && a < EPSILON) {
-      return null;
+      return double.NAN;
     }
 
     final f = 1 / a;
@@ -106,14 +108,14 @@ class Ray {
     final u = f * (_s.dot(_q));
 
     if (u < 0.0) {
-      return null;
+      return double.NAN;
     }
 
     _s.crossInto(_e1, _r);
     final v = f * (_direction.dot(_r));
 
     if (v < -EPSILON || u + v > 1.0 + EPSILON) {
-      return null;
+      return double.NAN;
     }
 
     final t = f * (_e2.dot(_r));
@@ -122,7 +124,8 @@ class Ray {
   }
 
   /// Return the distance from the origin of [this] to the intersection with
-  /// [other] if [this] intersects with [other], or null if the don't intersect.
+  /// [other] if [this] intersects with [other], or [double.NAN] if they don't
+  /// intersect.
   double intersectsWithQuad(Quad other) {
     const double EPSILON = 10e-6;
 
@@ -194,11 +197,12 @@ class Ray {
       }
     }
 
-    return null;
+    return double.NAN;
   }
 
   /// Return the distance from the origin of [this] to the intersection with
-  /// [other] if [this] intersects with [other], or null if the don't intersect.
+  /// [other] if [this] intersects with [other], or [double.NAN] if they don't
+  /// intersect.
   double intersectsWithAabb3(Aabb3 other) {
     final otherMin = other.min;
     final otherMax = other.max;
@@ -209,7 +213,7 @@ class Ray {
     for (var i = 0; i < 3; ++i) {
       if (_direction[i] == 0.0) {
         if (_origin[i] < otherMin[i] || _origin[i] > otherMax[i]) {
-          return null;
+          return double.NAN;
         }
       } else {
         var t1 = (otherMin[i] - _origin[i]) / _direction[i];
@@ -230,7 +234,7 @@ class Ray {
         }
 
         if (tNear > tFar || tFar < 0) {
-          return null;
+          return double.NAN;
         }
       }
     }
