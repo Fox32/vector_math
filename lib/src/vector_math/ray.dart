@@ -200,8 +200,8 @@ class Ray {
   /// Return the distance from the origin of [this] to the intersection with
   /// [other] if [this] intersects with [other], or null if the don't intersect.
   double intersectsWithAabb3(Aabb3 other) {
-    final otherMin = other.min._v3storage;
-    final otherMax = other.max._v3storage;
+    final otherMin = other._min._v3storage;
+    final otherMax = other._max._v3storage;
     final origin = _origin._v3storage;
     final direction = _direction._v3storage;
 
