@@ -200,20 +200,22 @@ class Ray {
   /// Return the distance from the origin of [this] to the intersection with
   /// [other] if [this] intersects with [other], or null if the don't intersect.
   double intersectsWithAabb3(Aabb3 other) {
-    final otherMin = other.min;
-    final otherMax = other.max;
+    final otherMin = other.min._v3storage;
+    final otherMax = other.max._v3storage;
+    final origin = _origin._v3storage;
+    final direction = _direction._v3storage;
 
     var tNear = -double.MAX_FINITE;
     var tFar = double.MAX_FINITE;
 
     for (var i = 0; i < 3; ++i) {
-      if (_direction[i] == 0.0) {
-        if (_origin[i] < otherMin[i] || _origin[i] > otherMax[i]) {
+      if (direction[i] == 0.0) {
+        if (origin[i] < otherMin[i] || origin[i] > otherMax[i]) {
           return null;
         }
       } else {
-        var t1 = (otherMin[i] - _origin[i]) / _direction[i];
-        var t2 = (otherMax[i] - _origin[i]) / _direction[i];
+        var t1 = (otherMin[i] - origin[i]) / direction[i];
+        var t2 = (otherMax[i] - origin[i]) / direction[i];
 
         if (t1 > t2) {
           final temp = t1;
