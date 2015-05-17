@@ -208,32 +208,102 @@ class Ray {
     var tNear = -double.MAX_FINITE;
     var tFar = double.MAX_FINITE;
 
-    for (var i = 0; i < 3; ++i) {
-      if (direction[i] == 0.0) {
-        if (origin[i] < otherMin[i] || origin[i] > otherMax[i]) {
-          return null;
-        }
-      } else {
-        var t1 = (otherMin[i] - origin[i]) / direction[i];
-        var t2 = (otherMax[i] - origin[i]) / direction[i];
+    // x axis
+    final otherMinX = otherMin[0];
+    final otherMaxX = otherMax[0];
+    final originX = origin[0];
+    final directionX = direction[0];
 
-        if (t1 > t2) {
-          final temp = t1;
-          t1 = t2;
-          t2 = temp;
-        }
+    if (directionX == 0.0) {
+      if (originX < otherMinX || originX > otherMaxX) {
+        return null;
+      }
+    } else {
+      var t1 = (otherMinX - originX) / directionX;
+      var t2 = (otherMaxX - originX) / directionX;
 
-        if (t1 > tNear) {
-          tNear = t1;
-        }
+      if (t1 > t2) {
+        final temp = t1;
+        t1 = t2;
+        t2 = temp;
+      }
 
-        if (t2 < tFar) {
-          tFar = t2;
-        }
+      if (t1 > tNear) {
+        tNear = t1;
+      }
 
-        if (tNear > tFar || tFar < 0) {
-          return null;
-        }
+      if (t2 < tFar) {
+        tFar = t2;
+      }
+
+      if (tNear > tFar || tFar < 0) {
+        return null;
+      }
+    }
+
+    // y axis
+    final otherMinY = otherMin[1];
+    final otherMaxY = otherMax[1];
+    final originY = origin[1];
+    final directionY = direction[1];
+
+    if (directionY == 0.0) {
+      if (originY < otherMinY || originY > otherMaxY) {
+        return null;
+      }
+    } else {
+      var t1 = (otherMinY - originY) / directionY;
+      var t2 = (otherMaxY - originY) / directionY;
+
+      if (t1 > t2) {
+        final temp = t1;
+        t1 = t2;
+        t2 = temp;
+      }
+
+      if (t1 > tNear) {
+        tNear = t1;
+      }
+
+      if (t2 < tFar) {
+        tFar = t2;
+      }
+
+      if (tNear > tFar || tFar < 0) {
+        return null;
+      }
+    }
+
+    // z axis
+    final directionZ = direction[2];
+    final originZ = origin[2];
+    final otherMinZ = otherMin[2];
+    final otherMaxZ = otherMax[2];
+
+    if (directionZ == 0.0) {
+      if (originZ < otherMinZ || originZ > otherMaxZ) {
+        return null;
+      }
+    } else {
+      var t1 = (otherMinZ - originZ) / directionZ;
+      var t2 = (otherMaxZ - originZ) / directionZ;
+
+      if (t1 > t2) {
+        final temp = t1;
+        t1 = t2;
+        t2 = temp;
+      }
+
+      if (t1 > tNear) {
+        tNear = t1;
+      }
+
+      if (t2 < tFar) {
+        tFar = t2;
+      }
+
+      if (tNear > tFar || tFar < 0) {
+        return null;
       }
     }
 
