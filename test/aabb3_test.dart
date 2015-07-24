@@ -254,7 +254,7 @@ void testIntersectionTriangle() {
 }
 
 void testIntersectionPlane() {
-  final plane = new Plane.normalconstant($v3(1.0, 0.0, 0.0), 10.0);
+  final plane = new Plane.normalConstant($v3(1.0, 0.0, 0.0), 10.0);
 
   final left = new Aabb3.minMax($v3(-5.0, -5.0, -5.0), $v3(5.0, 5.0, 5.0));
   final right = new Aabb3.minMax($v3(15.0, 15.0, 15.0), $v3(30.0, 30.0, 30.0));
