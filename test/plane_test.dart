@@ -49,10 +49,20 @@ void testPlaneIntersection() {
   expect(point.z, equals(4.0));
 }
 
+void testFromNormalPoint() {
+  final plane = new Plane.normalPoint($v3(1.0, 0.0, 0.0), $v3(0.0, -2.0, 0.0));
+
+  expect(plane.normal.x, equals(1.0));
+  expect(plane.normal.y, equals(0.0));
+  expect(plane.normal.z, equals(0.0));
+  expect(plane.constant, equals(-2.0));
+}
+
 void main() {
   group('Plane', () {
     test('Normalize', testPlaneNormalize);
     test('DistanceToVector3', testPlaneDistanceToVector3);
     test('Intersection', testPlaneIntersection);
+    test('normalPoint', testFromNormalPoint);
   });
 }

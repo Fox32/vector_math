@@ -65,10 +65,26 @@ class Plane {
       : _normal = new Vector3.copy(normal),
         _constant = constant;
 
+  /// Create a plane with a [normal] and a [point] lying on the plane.
+  factory Plane.normalPoint(Vector3 normal, Vector3 point) =>
+      new Plane()..setFromNormalPoint(normal, point);
+
   /// Copy the plane from [other].
   void copyFrom(Plane other) {
     _normal.setFrom(other._normal);
     _constant = other._constant;
+  }
+
+  /// Set the plane's [normal] and [constant].
+  void setFromNormalConstant(Vector3 normal, double constant) {
+    _normal.setFrom(normal);
+    _constant = constant;
+  }
+
+  /// Set the plane from a [normal] and a [point] lying on the plane.
+  void setFromNormalPoint(Vector3 normal, Vector3 point) {
+    _normal.setFrom(normal);
+    _constant = normal.dot(-point);
   }
 
   /// Set the plane's [x], [y], [z], and [w] components.
