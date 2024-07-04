@@ -4,7 +4,7 @@ description: A Vector Math library for 2D and 3D applications.
 repository: https://github.com/google/vector_math.dart
 
 environment:
-  sdk: ^3.1.0
+  sdk: ^3.3.0
 
 dev_dependencies:
   benchmark_harness: ^2.0.0

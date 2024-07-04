@@ -7,3 +7,7 @@ pubspec.lock
 .packages
 .dart_tool
 .idea
+
+benchmark/*.dart.js
+benchmark/*.dart.js.*
+benchmark/*.exe
